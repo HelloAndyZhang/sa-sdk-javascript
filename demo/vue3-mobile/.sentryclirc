@@ -1,0 +1,11 @@
+[auth]
+# 用户登录token 需要修改
+token=token
+
+[defaults]
+# 组织名 固定为uufe即可
+org=uufe
+# 项目名 需要修改
+project=test_project
+# 服务器网址 固定此网址即可
+url=https://sentry.mit.cn/

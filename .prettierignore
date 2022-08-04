@@ -1,0 +1,12 @@
+# 忽略文件或目录:
+build
+dist
+node_modules
+zip
+
+**/*.txt
+**/*.md
+**/*.svg
+**/*.ttf
+**/*.woff
+**/*.eot

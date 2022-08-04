@@ -1,0 +1,93 @@
+{
+  "name": "vue3-mobile",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "npm run dev:vite",
+    "dev:vite": "vite --host",
+    "dev:cli": "vue-cli-service serve",
+    "build": "gulp clean && npm run build:cli && gulp default --note",
+    "build:cli": "vue-cli-service build",
+    "build:vite": "vite build",
+    "build:sentry": "npm run clean:sentry && cross-env USESENTRY=1 npm run build",
+    "build:analyze": "cross-env ANALYZE=1 npm run build",
+    "vite:preivew": "vite preview",
+    "lint": "vue-cli-service lint --fix",
+    "prettier": "prettier --write ./src",
+    "release": "standard-version",
+    "commit": "cz",
+    "clean:sentry": "node ./scripts/sentry/index -c delete",
+    "add:page": "node ./scripts/template/generateView",
+    "add:component": "node ./scripts/template/generateComponent"
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged",
+    "commit-msg": "commitlint -e $GIT_PARAMS"
+  },
+  "lint-staged": {
+    "./src/**/*.{js,jsx,ts,tsx,md,json,vue,less,scss,css}": [
+      "prettier --write"
+    ]
+  },
+  "dependencies": {
+    "@FunUI/Fun-UI": "^1.0.0",
+    "@sentry/tracing": "^7.0.0",
+    "@sentry/vue": "^7.0.0",
+    "@uupt/request": "0.0.4",
+    "@uupt/utils": "^1.0.0",
+    "amfe-flexible": "^2.2.1",
+    "axios": "^0.27.2",
+    "clipboardy": "^3.0.0",
+    "core-js": "^3.8.3",
+    "cross-env": "^7.0.3",
+    "dayjs": "^1.11.3",
+    "nprogress": "^0.2.0",
+    "pinia": "^2.0.14",
+    "vue": "^3.2.36",
+    "vue-router": "^4.0.13"
+  },
+  "devDependencies": {
+    "@originjs/vite-plugin-commonjs": "^1.0.3",
+    "@sentry/webpack-plugin": "^1.18.9",
+    "@typescript-eslint/eslint-plugin": "^5.4.0",
+    "@typescript-eslint/parser": "^5.4.0",
+    "@vitejs/plugin-legacy": "^1.8.2",
+    "@vitejs/plugin-vue": "^2.3.3",
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-plugin-eslint": "~5.0.0",
+    "@vue/cli-plugin-router": "~5.0.0",
+    "@vue/cli-plugin-typescript": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "@vue/eslint-config-typescript": "^9.1.0",
+    "babel-plugin-import": "^1.13.5",
+    "compression-webpack-plugin": "^10.0.0",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-vue": "^8.0.3",
+    "gulp": "^4.0.2",
+    "gulp-clean": "^0.4.0",
+    "gulp-zip": "^5.1.0",
+    "less": "^4.0.0",
+    "less-loader": "^8.0.0",
+    "lint-staged": "^11.1.2",
+    "mockjs": "^1.1.0",
+    "postcss": "^8.4.14",
+    "postcss-px-to-viewport": "^1.1.1",
+    "postcss-pxtorem": "^6.0.0",
+    "prettier": "^2.4.1",
+    "typescript": "~4.5.5",
+    "unplugin-vue-components": "^0.19.6",
+    "vite": "^2.9.10",
+    "vite-plugin-externals": "^0.5.0",
+    "vite-plugin-html": "^3.2.0",
+    "vite-plugin-imp": "^2.2.0",
+    "vite-plugin-mock": "^2.9.6",
+    "yorkie": "^2.0.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}

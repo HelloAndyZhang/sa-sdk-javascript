@@ -1,0 +1,23 @@
+# 配置详见 http://editorconfig.org
+root = true
+
+[*]
+#设置缩进风格 （tab是硬缩进  space是软缩进）
+indent_style = space
+# 缩进的宽度 这里设置为2
+indent_size = 2
+# 设置换行符  值有 lf 、cr、crlf
+end_of_line = lf
+# 设置编码
+charset = utf-8
+# 设置为true以删除换行符前面的任何空白字符
+trim_trailing_whitespace = true
+# 设为true表示使文件以一个空白行结尾
+insert_final_newline = true
+
+[*.md]
+# md文件不删除换行符前的字符
+trim_trailing_whitespace = false
+
+[Makefile]
+indent_style = tab
