@@ -189,6 +189,7 @@ export default class Kit {
     const crc = 'crc=' + hashCode(dataStr)
     return 'data=' + encodeURIComponent(dataStr) + '&ext=' + encodeURIComponent(crc)
   }
+
   // 获取渠道来源暂时没有用到
   getUtmData() {
     // return processGetUtmData();

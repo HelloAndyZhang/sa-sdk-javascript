@@ -329,6 +329,7 @@ export class UUFox {
       this.spa.emit('switch', url)
     })
   }
+
   register(props: any) {
     if (
       eventCheck({
@@ -340,6 +341,7 @@ export class UUFox {
       this.logger.log('register输入的参数有误')
     }
   }
+
   registerPage(obj: any) {
     if (
       eventCheck({
@@ -352,6 +354,7 @@ export class UUFox {
       this.logger.log('register输入的参数有误')
     }
   }
+
   listenSinglePage() {
     if (this.para.is_track_single_page) {
       this.spa.on('switch', (last_url: string) => {

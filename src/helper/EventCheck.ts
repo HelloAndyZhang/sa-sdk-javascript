@@ -4,7 +4,7 @@ import ufox from '..'
 import Logger from './Logger'
 
 const logger = new Logger({ id: 'EventCheck', enabled: true })
-var checkLog = {
+const checkLog = {
   string: function (str: string) {
     logger.log(str + ' must be string')
   },
@@ -36,7 +36,7 @@ var checkLog = {
     logger.log(str + ' is invalid')
   }
 }
-var ruleOption = {
+const ruleOption = {
   regName:
     /^((?!^distinct_id$|^original_id$|^time$|^properties$|^id$|^first_id$|^second_id$|^users$|^events$|^event$|^user_id$|^date$|^datetime$|^user_tag.*|^user_group.*)[a-zA-Z_$][a-zA-Z\d_$]*)$/i,
   loginIDReservedNames: ['$identity_anonymous_id', '$identity_cookie_id'],
@@ -97,7 +97,7 @@ var ruleOption = {
     return true
   },
   reservedBind: function (str: any) {
-    var historyId = ufox.store._state.history_login_id
+    const historyId = ufox.store._state.history_login_id
     if (historyId && historyId.name && historyId.name === str) {
       return false
     }
@@ -165,7 +165,7 @@ const checkOption = {
           propertyKey: k
         })
 
-        var onComplete = function (status: any, val: any, rule_type: any) {
+        const onComplete = function (status: any, val: any, rule_type: any) {
           if (!status) {
             val = k + "'s Value"
             isFunction(checkLog[rule_type]) && checkLog[rule_type](val)
@@ -278,16 +278,16 @@ const checkOption = {
   },
 
   check: function (a: string, b: any, onComplete: any) {
-    var checkRules = this[a]
+    const checkRules = this[a]
     if (isFunction(checkRules)) {
       return checkRules.call(this, b)
     } else if (!checkRules) {
       return false
     }
-    for (var i = 0; i < checkRules.rules.length; i++) {
-      var rule = checkRules.rules[i]
-      var status = ruleOption[rule](b)
-      var result = isFunction(onComplete)
+    for (let i = 0; i < checkRules.rules.length; i++) {
+      const rule = checkRules.rules[i]
+      const status = ruleOption[rule](b)
+      const result = isFunction(onComplete)
         ? onComplete(status, b, rule)
         : checkRules.onComplete(status, b, rule)
       if (!status) {
@@ -299,7 +299,7 @@ const checkOption = {
 }
 
 export default function check(p: any, onComplete?: CallBack) {
-  for (var i in p) {
+  for (const i in p) {
     if (Object.prototype.hasOwnProperty.call(p, i) && !checkOption.check(i, p[i], onComplete)) {
       return false
     }
