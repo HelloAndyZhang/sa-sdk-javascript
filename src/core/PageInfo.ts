@@ -10,7 +10,7 @@ export default class PageInfo {
     url_domain: string
   }
 
-  currentProps: any
+  currentProps: Record<string, any>
   constructor() {
     this.pageProp = {
       referrer: '',
@@ -19,12 +19,14 @@ export default class PageInfo {
       url_host: '',
       url_domain: ''
     }
+    this.currentProps = {}
   }
 
   initPage() {
     const referrer = getReferrer()
     const url = getURL()
     const url_domain = getCurrentDomain(url)
+    console.log('url_domain', url_domain, url)
     if (!url_domain) {
       ufox.logger.debug('url_domain异常_' + url + '_' + url_domain)
     }
@@ -77,7 +79,7 @@ export default class PageInfo {
     return propertiesObj
   }
 
-  register(obj: any) {
+  register(obj: Record<string, any>) {
     extend(this.currentProps, obj)
   }
 }

@@ -1,4 +1,4 @@
-import { trim, _decodeURI } from './index'
+import { _decodeURI } from './index'
 export const getUA = () => {
   const Sys: Record<string, number> = {}
   const ua = navigator.userAgent.toLowerCase()
@@ -23,18 +23,4 @@ export const getUA = () => {
     Sys.ie = 11
   }
   return Sys
-}
-
-export function getReferrer(referrer?: any, full?: any) {
-  referrer = referrer || document.referrer
-  if (typeof referrer !== 'string') {
-    return '取值异常_referrer异常_' + String(referrer)
-  }
-  referrer = trim(referrer)
-  referrer = _decodeURI(referrer)
-  if (referrer.indexOf('https://www.baidu.com/') === 0 && !full) {
-    referrer = referrer.split('?')[0]
-  }
-  // referrer = referrer.slice(0, sdPara.max_referrer_string_length);
-  return typeof referrer === 'string' ? referrer : ''
 }

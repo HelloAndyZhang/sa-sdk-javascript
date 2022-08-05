@@ -19,6 +19,7 @@ import {
 } from '../utils'
 import ufox from '..'
 import { IDENTITY_KEY } from '../Constant'
+import userInfo from './UserInfo'
 interface State {
   history_login_id: any
   distinct_id: string
@@ -96,7 +97,7 @@ export default class Store {
   }
 
   initSessionState() {
-    let ds = cookie.get('sensorsdata2015session')
+    let ds = cookie.get('ufoxsession')
     ds = decryptIfNeeded(ds)
     let state = null
     if (ds !== null && typeof (state = safeJSONParse(ds)) === 'object') {
@@ -104,7 +105,7 @@ export default class Store {
     }
   }
 
-  setOnce(a: any, b: any) {
+  setOnce(a: string, b: any) {
     if (!(a in this._state)) {
       this.set(a, b)
     }
@@ -141,7 +142,7 @@ export default class Store {
     this.sessionSave(props)
   }
 
-  setProps(newp: any, isCover: any) {
+  setProps(newp: any, isCover?: boolean) {
     let props: any = {}
     if (!isCover) {
       props = extend(this._state.props || {}, newp)
@@ -195,7 +196,7 @@ export default class Store {
     if (ufox.para.encrypt_cookie) {
       sessionStateStr = encrypt(sessionStateStr)
     }
-    cookie.set('sensorsdata2015session', sessionStateStr, 0)
+    cookie.set('ufoxsession', sessionStateStr, 0)
   }
 
   save() {
@@ -228,7 +229,7 @@ export default class Store {
         sub = 'sa_jssdk_2015_root' + ufox.para.sdk_id
       }
     } else {
-      sub = 'sensorsdata2015jssdkcross' + ufox.para.sdk_id
+      sub = 'ufoxjssdkcross' + ufox.para.sdk_id
     }
     return sub
   }
@@ -349,9 +350,9 @@ export default class Store {
       this._state = extend(compatibleWith3(cookieJSON))
       this.save()
     }
-    // saNewUser.setDeviceId(uuid)
-    // saNewUser.storeInitCheck()
-    // saNewUser.checkIsFirstLatest()
+    userInfo.setDeviceId(uuid)
+    userInfo.storeInitCheck()
+    userInfo.checkIsFirstLatest()
   }
 
   saveObjectVal(name: any, value: any) {

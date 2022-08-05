@@ -2,7 +2,6 @@ import {
   isString,
   isArray,
   _localStorage,
-  isFunction,
   safeJSONParse,
   getRandom,
   base64Encode,
@@ -11,8 +10,12 @@ import {
 } from '../utils'
 import ConcurrentStorage from '../helper/ConcurrentStorage'
 import ufox from '..'
-const dataStoragePrefix = 'sawebjssdk-'
-const tabStoragePrefix = 'tab-sawebjssdk-'
+const dataStoragePrefix = 'ufoxwebjssdk-'
+const tabStoragePrefix = 'tab-ufoxwebjssdk-'
+
+/**
+ *    批量发送数据
+ */
 export default class BatchSend {
   sendTimeStamp: number
   timer: any

@@ -70,7 +70,7 @@ function getRealtimeInstance(data: any) {
   return obj
 }
 export default class SendState {
-  getSendCall(data: any, config: any, callback: any) {
+  getSendCall(data: any, config: any, callback?: CallBack) {
     if (ufox.is_heatmap_render_mode) {
       return
     }

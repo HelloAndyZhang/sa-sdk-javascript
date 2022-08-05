@@ -15,7 +15,7 @@ export const para_default: ParaDefault = {
   enc_cookie: false,
   img_use_crossorigin: false,
 
-  name: 'sa',
+  name: 'ufox',
   max_referrer_string_length: 200,
   max_string_length: 500,
   max_id_length: 255,

@@ -158,7 +158,6 @@ export function getCookieTopLevelDomain(hostname: string | null, testFlag: strin
           nowDate.toUTCString() +
           '; path=/; SameSite=Lax; domain=' +
           domainStr
-
         return domainStr
       }
     }
@@ -196,4 +195,49 @@ export function getCurrentDomain(url: string) {
         return cookieTopLevelDomain
       }
   }
+}
+
+export function getQueryParam(url: string, key: string) {
+  key = key.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]')
+  url = _decodeURIComponent(url)
+  const regexS = '[\\?&]' + key + '=([^&#]*)'
+  const regex = new RegExp(regexS)
+  const results: any = regex.exec(url)
+  if (results === null || (results && typeof results[1] !== 'string' && results[1].length)) {
+    return ''
+  } else {
+    return _decodeURIComponent(results[1])
+  }
+}
+
+export function getQueryParamsFromUrl(url: string) {
+  let result = {}
+  const arr = url.split('?')
+  const queryString = arr[1] || ''
+  if (queryString) {
+    result = getURLSearchParams('?' + queryString)
+  }
+  return result
+}
+export function getWxAdIdFromUrl(url: string) {
+  const click_id = getQueryParam(url, 'gdt_vid')
+  const hash_key = getQueryParam(url, 'hash_key')
+  const callbacks = getQueryParam(url, 'callbacks')
+  const obj = {
+    click_id: '',
+    hash_key: '',
+    callbacks: ''
+  }
+  if (isString(click_id) && click_id.length) {
+    obj.click_id = click_id.length == 16 || click_id.length == 18 ? click_id : '参数解析不合法'
+
+    if (isString(hash_key) && hash_key.length) {
+      obj.hash_key = hash_key
+    }
+    if (isString(callbacks) && callbacks.length) {
+      obj.callbacks = callbacks
+    }
+  }
+
+  return obj
 }

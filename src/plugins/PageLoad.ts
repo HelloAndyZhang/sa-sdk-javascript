@@ -1,5 +1,6 @@
 import { isNumber, getReferrer, getURL, getURLPath } from '../utils'
 import { UUFox } from '..'
+
 class PageLoad {
   init(sd: UUFox) {
     function getPageSize(p: any, prop: any) {
@@ -26,7 +27,7 @@ class PageLoad {
         window.msPerformance ||
         window.mozPerformance
       let duration = 0
-      const prop: any = {
+      const prop: Partial<Properties> = {
         $url: getURL(),
         $title: document.title,
         $url_path: getURLPath(),

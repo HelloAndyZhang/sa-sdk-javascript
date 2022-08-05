@@ -11,7 +11,8 @@ import {
   isFunction,
   each,
   getReferrer,
-  getURLPath
+  getURLPath,
+  getHostname
 } from './utils'
 import PageInfo from './core/PageInfo'
 import EventEmitterSa from './helper/EventEmitterSa'
@@ -21,8 +22,10 @@ import EventEmitter from './helper/EventEmitter'
 import Store from './core/Store'
 import Logger from './helper/Logger'
 import { addHashEvent } from './helper/addEvent'
+import eventCheck from './helper/EventCheck'
 import Kit from './core/kit'
 import BatchSend from './core/BatchSend'
+import userInfo from './core/UserInfo'
 import { para_default, sdkversion_placeholder, source_channel_standard, sdPara } from './Constant'
 import * as modules from './plugins'
 export class UUFox {
@@ -223,17 +226,20 @@ export class UUFox {
     }
   }
 
-  track(
-    event: string,
-    properties?: { [key: string]: string },
-    callback?: (...rest: any[]) => void
-  ) {
-    const data = this.kit.buildData({
-      type: 'track',
-      event: event,
-      properties: properties
-    })
-    this.kit.sendData(data, callback)
+  track(event: string, properties?: Partial<Properties>, callback?: CallBack) {
+    if (
+      eventCheck({
+        event: event,
+        properties: properties
+      })
+    ) {
+      const data = this.kit.buildData({
+        type: 'track',
+        event: event,
+        properties: properties
+      })
+      this.kit.sendData(data, callback)
+    }
   }
 
   quick(event: string, para: any) {
@@ -242,7 +248,7 @@ export class UUFox {
     }
   }
 
-  autoTrack(para: any, callback?: (...rest: any[]) => void) {
+  autoTrack(para: Partial<Properties>, callback?: CallBack) {
     para = isObject(para) ? para : {}
 
     const utms = this.pageInfo.campaignParams()
@@ -323,7 +329,29 @@ export class UUFox {
       this.spa.emit('switch', url)
     })
   }
-
+  register(props: any) {
+    if (
+      eventCheck({
+        properties: props
+      })
+    ) {
+      this.store.setProps(props)
+    } else {
+      this.logger.log('register输入的参数有误')
+    }
+  }
+  registerPage(obj: any) {
+    if (
+      eventCheck({
+        properties: obj
+      })
+    ) {
+      // this.pageInfo.register(obj)
+      extend(this.pageInfo.currentProps, obj)
+    } else {
+      this.logger.log('register输入的参数有误')
+    }
+  }
   listenSinglePage() {
     if (this.para.is_track_single_page) {
       this.spa.on('switch', (last_url: string) => {
@@ -355,6 +383,44 @@ export class UUFox {
         }
       })
     }
+  }
+
+  getPresetProperties() {
+    const getUtm = () => {
+      const utms = this.pageInfo.campaignParams()
+      const $utms = {}
+      each(utms, (_v: any, i: any, utms: any) => {
+        if ((' ' + this.source_channel_standard + ' ').indexOf(' ' + i + ' ') !== -1) {
+          $utms['$' + i] = utms[i]
+        } else {
+          $utms[i] = utms[i]
+        }
+      })
+      return $utms
+    }
+
+    const obj = {
+      $is_first_day: userInfo.isNewUser(),
+      $is_first_time: userInfo.is_page_first_visited,
+      $referrer: this.pageInfo.pageProp.referrer || '',
+      $referrer_host: this.pageInfo.pageProp.referrer
+        ? getHostname(this.pageInfo.pageProp.referrer)
+        : '',
+      $url: getURL(),
+      $url_path: getURLPath(),
+      $title: document.title || '',
+      _distinct_id: this.store.getDistinctId(),
+      identities: JSON.parse(JSON.stringify(this.store._state.identities))
+    }
+    const result = extend({}, this.pageInfo.properties(), this.store.getProps(), getUtm(), obj)
+    if (
+      this.para.preset_properties.latest_referrer &&
+      this.para.preset_properties.latest_referrer_host
+    ) {
+      result.$latest_referrer_host =
+        result.$latest_referrer === '' ? '' : getHostname(result.$latest_referrer)
+    }
+    return result
   }
 
   use(name: string, option?: { [key: string]: any }) {

@@ -19,8 +19,10 @@ const resetAppStore = () => {
     }
   })
 }
+var sensors = window['sensorsDataAnalytic201505'];
 const tarck =(type='')=>{
   uFox.track(type,{pageName:'uupt'})
+  // sensors && sensors.track(type,)
 }
 </script>
 

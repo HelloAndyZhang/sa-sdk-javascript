@@ -13,6 +13,7 @@ import {
   hashCode,
   searchConfigData
 } from '../utils'
+import userInfo from './UserInfo'
 import ufox from '..'
 
 function addReferrerHost(data: any) {
@@ -164,15 +165,18 @@ export default class Kit {
     }
 
     // sd.vtrackBase.addCustomProps(data);
+    // parseSuperProperties(data)
 
     addReferrerHost(data)
     addPropsHook(data)
 
+    userInfo.checkIsAddSign(data)
+    userInfo.checkIsFirstTime(data)
     // processFormatData(data);
     return data
   }
 
-  sendData(data: any, callback?: () => void) {
+  sendData(data: any, callback?: CallBack) {
     const data_config = searchConfigData(data.properties)
     if (ufox.para.debug_mode === true) {
       ufox.logger.log(data)
@@ -185,8 +189,9 @@ export default class Kit {
     const crc = 'crc=' + hashCode(dataStr)
     return 'data=' + encodeURIComponent(dataStr) + '&ext=' + encodeURIComponent(crc)
   }
-
+  // 获取渠道来源暂时没有用到
   getUtmData() {
     // return processGetUtmData();
+    return {}
   }
 }

@@ -19,7 +19,7 @@ const _cookie = {
   set: function (
     name: string,
     value: string,
-    days?: number,
+    days?: any,
     _cross_subdomain?: string,
     cookie_samesite?: string,
     is_secure?: boolean,
@@ -100,7 +100,7 @@ export var cookie = {
   get: function (name: string) {
     return _cookie.get(name)
   },
-  set: function (name: string, value: string, days: number, cross_subdomain?: any) {
+  set: function (name: string, value: string, days: any, cross_subdomain?: any) {
     let cdomain = ''
     cross_subdomain =
       typeof cross_subdomain === 'undefined' ? sdPara.cross_subdomain : cross_subdomain
@@ -128,7 +128,7 @@ export var cookie = {
       typeof cross_subdomain === 'undefined' ? sdPara.cross_subdomain : cross_subdomain
     return _cookie.remove(name, cross_subdomain)
   },
-  isSupport: function (testKey = 'sajssdk_2015_cookie_access_test', testValue = '1') {
+  isSupport: function (testKey = 'ufoxjssdk_2015_cookie_access_test', testValue = '1') {
     return _cookie.isSupport(testKey, testValue)
   }
 }
