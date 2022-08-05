@@ -1,4 +1,3 @@
-import { ParaDefault } from './InterFace'
 export const para_default: ParaDefault = {
   preset_properties: {
     search_keyword_baidu: false,

@@ -7,7 +7,6 @@
   "module": "lib/index.esm.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "bootstrap": "yarn && npm-run-all --serial install:*",
     "build:watch": "cross-env NODE_ENV='development' rollup -c -w",
     "build": "cross-env NODE_ENV='production' rollup -c && npm run createtype && npm run afterbuild",
     "prettier": "prettier --write ./src",

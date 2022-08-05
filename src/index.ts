@@ -23,7 +23,6 @@ import Logger from './helper/Logger'
 import { addHashEvent } from './helper/addEvent'
 import Kit from './core/kit'
 import BatchSend from './core/BatchSend'
-import { ParaDefault, SDKConfig } from './InterFace'
 import { para_default, sdkversion_placeholder, source_channel_standard, sdPara } from './Constant'
 import * as modules from './plugins'
 export class UUFox {
