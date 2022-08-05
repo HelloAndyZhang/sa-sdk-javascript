@@ -28,14 +28,12 @@ import { para_default, sdkversion_placeholder, source_channel_standard, sdPara }
 import * as modules from './plugins'
 export class UUFox {
   private _t: number
-  lib_version: string
-  is_first_visitor: boolean
-  source_channel_standard: string
-  is_heatmap_render_mode: boolean
-  para!: ParaDefault
-  private readonly instanceName = `#${UUFox.instanceCount++}`
+  public lib_version: string
+  public is_first_visitor: boolean
+  public source_channel_standard: string
+  public is_heatmap_render_mode: boolean
+  public para!: ParaDefault
   readonly logger: Logger
-  private static instanceCount = 1
   public events: EventEmitterSa
   public pageInfo: PageInfo
   public spa: EventEmitter
@@ -49,7 +47,7 @@ export class UUFox {
   constructor() {
     this.spa = new EventEmitter()
     this.sdk = new EventEmitter()
-    this.logger = new Logger({ id: this.instanceName, enabled: true })
+    this.logger = new Logger({ id: '[uFox]', enabled: true })
     this.readyState = new ReadyState()
     this.sendState = new SendState()
     this.pageInfo = new PageInfo()

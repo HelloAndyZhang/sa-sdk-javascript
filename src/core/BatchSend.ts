@@ -6,18 +6,13 @@ import {
   safeJSONParse,
   getRandom,
   base64Encode,
-  ajax
+  ajax,
+  now
 } from '../utils'
 import ConcurrentStorage from '../helper/ConcurrentStorage'
 import ufox from '..'
 const dataStoragePrefix = 'sawebjssdk-'
 const tabStoragePrefix = 'tab-sawebjssdk-'
-function now() {
-  if (Date.now && isFunction(Date.now)) {
-    return Date.now()
-  }
-  return new Date().getTime()
-}
 export default class BatchSend {
   sendTimeStamp: number
   timer: any

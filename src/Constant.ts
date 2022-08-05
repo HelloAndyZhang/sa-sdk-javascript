@@ -55,7 +55,7 @@ export const para_default: ParaDefault = {
 }
 
 export const source_channel_standard = 'utm_source utm_medium utm_campaign utm_content utm_term'
-export const sdkversion_placeholder = '1.23.3'
+export const sdkversion_placeholder = '1.0.0'
 export const domain_test_key = 'uufox_domain_test'
 
 export const IDENTITY_KEY = {
