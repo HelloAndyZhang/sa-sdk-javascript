@@ -78,7 +78,7 @@ export function _URL(url: string) {
     url = trim(url)
     const _regex = /^https?:\/\/.+/
     if (_regex.test(url) === false) {
-      console.log('Invalid URL')
+      console.warn('Invalid URL')
       return
     }
     const instance = new URLParser(url)
@@ -116,7 +116,7 @@ export function getHostname(url: string, defaultValue?: string) {
   try {
     hostname = _URL(url)?.hostname
   } catch (e) {
-    console.log('getHostname传入的url参数不合法！')
+    console.warn('getHostname传入的url参数不合法！')
   }
   return hostname || defaultValue
 }
@@ -169,7 +169,7 @@ export function getCurrentDomain(url: string) {
   const sdDomain = sdPara.current_domain
   switch (typeof sdDomain) {
     case 'function':
-      var resultDomain = sdDomain()
+      const resultDomain = sdDomain()
       if (resultDomain === '' || trim(resultDomain) === '') {
         return 'url解析失败'
       } else if (resultDomain.indexOf('.') !== -1) {
@@ -186,7 +186,7 @@ export function getCurrentDomain(url: string) {
         return 'url解析失败'
       }
     default:
-      var cookieTopLevelDomain = getCookieTopLevelDomain(null, domain_test_key)
+      const cookieTopLevelDomain = getCookieTopLevelDomain(null, domain_test_key)
       if (url === '') {
         return 'url解析失败'
       } else if (cookieTopLevelDomain === '') {
@@ -229,7 +229,7 @@ export function getWxAdIdFromUrl(url: string) {
     callbacks: ''
   }
   if (isString(click_id) && click_id.length) {
-    obj.click_id = click_id.length == 16 || click_id.length == 18 ? click_id : '参数解析不合法'
+    obj.click_id = click_id.length === 16 || click_id.length === 18 ? click_id : '参数解析不合法'
 
     if (isString(hash_key) && hash_key.length) {
       obj.hash_key = hash_key

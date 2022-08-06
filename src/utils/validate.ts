@@ -7,12 +7,12 @@ export function isObject(arg: Arguments) {
   if (arg == null) {
     return false
   } else {
-    return Object.prototype.toString.call(arg) == '[object Object]'
+    return Object.prototype.toString.call(arg) === '[object Object]'
   }
 }
 
 export function isString(arg: any) {
-  return Object.prototype.toString.call(arg) == '[object String]'
+  return Object.prototype.toString.call(arg) === '[object String]'
 }
 
 export function isArguments(arg: Arguments) {
@@ -20,7 +20,7 @@ export function isArguments(arg: Arguments) {
 }
 
 export function isBoolean(arg: Arguments) {
-  return Object.prototype.toString.call(arg) == '[object Boolean]'
+  return Object.prototype.toString.call(arg) === '[object Boolean]'
 }
 
 export function isEmptyObject(arg: Arguments) {
@@ -40,7 +40,7 @@ export function isElement(arg: any) {
 }
 
 export function isUndefined(arg: any) {
-  return arg === void 0
+  return arg === undefined
 }
 
 export function isArray(arg: any) {
@@ -55,14 +55,14 @@ export function isFunction(arg: any) {
     return false
   }
   const type = Object.prototype.toString.call(arg)
-  return type == '[object Function]' || type == '[object AsyncFunction]'
+  return type === '[object Function]' || type === '[object AsyncFunction]'
 }
 
 export function isHttpUrl(str: string) {
   if (typeof str !== 'string') return false
   const _regex = /^https?:\/\/.+/
   if (_regex.test(str) === false) {
-    console.log('Invalid URL')
+    console.warn('Invalid URL')
     return false
   }
   return true
@@ -82,7 +82,7 @@ export function isJSONString(str: string) {
 }
 
 export function isNumber(arg: any) {
-  return Object.prototype.toString.call(arg) == '[object Number]' && /[\d\.]+/.test(String(arg))
+  return Object.prototype.toString.call(arg) === '[object Number]' && /[\d]+/.test(String(arg))
 }
 
 export function isSupportBeaconSend() {
@@ -157,5 +157,5 @@ export const isSupportSessionStorage = () => {
   return supported
 }
 export function isDate(arg: any) {
-  return Object.prototype.toString.call(arg) == '[object Date]'
+  return Object.prototype.toString.call(arg) === '[object Date]'
 }

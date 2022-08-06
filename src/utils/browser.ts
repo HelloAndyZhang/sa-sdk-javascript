@@ -1,4 +1,3 @@
-import { _decodeURI } from './index'
 export const getUA = () => {
   const Sys: Record<string, number> = {}
   const ua = navigator.userAgent.toLowerCase()

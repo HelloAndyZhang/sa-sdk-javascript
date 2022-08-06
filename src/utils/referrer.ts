@@ -145,6 +145,7 @@ export function getKeywordFromReferrer(
         }
       }
       if (sdPara.preset_properties.search_keyword_baidu && isBaiduTraffic()) {
+        return
       } else {
         return '未取到值'
       }

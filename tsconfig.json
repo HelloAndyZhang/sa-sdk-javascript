@@ -24,15 +24,9 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
-    "suppressImplicitAnyIndexErrors": true,
+    "suppressImplicitAnyIndexErrors": true
   },
-  "include": [
-    "src",
-    "typings"
-  ],
-  "exclude": [
-    "node_modules",
-    "dev"
-  ],
+  "include": ["src", "typings"],
+  "exclude": ["node_modules", "dev"],
   "compileOnSave": false
 }

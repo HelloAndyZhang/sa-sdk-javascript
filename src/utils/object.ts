@@ -25,7 +25,7 @@ export function each(obj: any, iterator: any, context?: any) {
 export function extend(obj: any, ...rest: any[]) {
   each(rest, function (source: any) {
     for (const prop in source) {
-      if (hasOwnProperty.call(source, prop) && source[prop] !== void 0) {
+      if (hasOwnProperty.call(source, prop) && source[prop] !== undefined) {
         obj[prop] = source[prop]
       }
     }
@@ -42,7 +42,7 @@ export function safeJSONParse(str: any) {
 export function coverExtend(obj: any, ...rest: any[]) {
   each(rest, function (source: any) {
     for (const prop in source) {
-      if (source[prop] !== void 0 && obj[prop] === void 0) {
+      if (source[prop] !== undefined && obj[prop] === undefined) {
         obj[prop] = source[prop]
       }
     }

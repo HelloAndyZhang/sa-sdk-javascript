@@ -17,7 +17,6 @@ module.exports = {
   rules: {
     // '@typescript-eslint/no-explicit-any': 'off',
     // '@typescript-eslint/ban-ts-comment': 'off',
-
     '@typescript-eslint/explicit-function-return-type': 0,
     '@typescript-eslint/indent': ['error', 2],
     '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', args: 'after-used' }],
@@ -29,6 +28,7 @@ module.exports = {
     '@typescript-eslint/interface-name-prefix': 0,
     '@typescript-eslint/member-delimiter-style': 0,
     camelcase: 'off',
+
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     // '@typescript-eslint/camelcase': [1, { "properties": "never" }],
     '@typescript-eslint/no-namespace': 0,

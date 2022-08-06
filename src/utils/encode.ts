@@ -43,7 +43,7 @@ export function hashCode(str: string) {
   }
   let hash = 0
   let char = null
-  if (str.length == 0) {
+  if (str.length === 0) {
     return hash
   }
   for (let i = 0; i < str.length; i++) {

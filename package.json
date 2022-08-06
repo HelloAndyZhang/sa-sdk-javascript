@@ -29,9 +29,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "keywords": [
-
-  ],
+  "keywords": [],
   "files": [
     "es",
     "lib",

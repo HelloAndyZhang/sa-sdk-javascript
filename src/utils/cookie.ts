@@ -7,10 +7,10 @@ const _cookie = {
     const ca = document.cookie.split(';')
     for (let i = 0; i < ca.length; i++) {
       let c = ca[i]
-      while (c.charAt(0) == ' ') {
+      while (c.charAt(0) === ' ') {
         c = c.substring(1, c.length)
       }
-      if (c.indexOf(nameEQ) == 0) {
+      if (c.indexOf(nameEQ) === 0) {
         return _decodeURIComponent(c.substring(nameEQ.length, c.length))
       }
     }
@@ -96,7 +96,7 @@ const _cookie = {
   }
 }
 
-export var cookie = {
+export const cookie = {
   get: function (name: string) {
     return _cookie.get(name)
   },

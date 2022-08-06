@@ -1,3 +1,8 @@
+type Listener = (...args: any[]) => void
+interface EventListener {
+  listener: Listener
+  once: boolean
+}
 function isValidListener(listener: EventListener | Listener): boolean {
   if (typeof listener === 'function') {
     return true
@@ -6,11 +11,6 @@ function isValidListener(listener: EventListener | Listener): boolean {
   } else {
     return false
   }
-}
-type Listener = (...args: any[]) => void
-interface EventListener {
-  listener: Listener
-  once: boolean
 }
 export default class EventEmitter {
   private _events: { [key: string]: Array<EventListener> }
