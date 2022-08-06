@@ -25,7 +25,7 @@ interface State {
   distinct_id: string
   first_id: string
   props: any
-  identities: {}
+  identities: any
   _distinct_id: string
   _first_id: string
   [key: string]: any

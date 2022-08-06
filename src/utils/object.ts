@@ -1,8 +1,21 @@
-import { isArray } from './validate'
+import { isArray, isObject, isDate, formatDate } from './index'
 
 const nativeForEach = Array.prototype.forEach
 const hasOwnProperty = Object.prototype.hasOwnProperty
 
+export function searchObjDate(o: any) {
+  if (isObject(o)) {
+    each(o, function (a: any, b: any) {
+      if (isObject(a)) {
+        searchObjDate(o[b])
+      } else {
+        if (isDate(a)) {
+          o[b] = formatDate(a)
+        }
+      }
+    })
+  }
+}
 export function each(obj: any, iterator: any, context?: any) {
   if (obj == null) {
     return

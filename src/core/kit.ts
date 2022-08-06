@@ -14,6 +14,7 @@ import {
   searchConfigData
 } from '../utils'
 import userInfo from './UserInfo'
+import { processFormatData, processAddCustomProps } from './stage/dataStage'
 import ufox from '..'
 
 function addReferrerHost(data: any) {
@@ -94,7 +95,7 @@ export default class Kit {
 
     extend(data, ufox.store.getUnionId(), p)
 
-    // processAddCustomProps(data);
+    processAddCustomProps(data)
 
     if (isObject(p.properties) && !isEmptyObject(p.properties)) {
       extend(data.properties, p.properties)
@@ -172,7 +173,7 @@ export default class Kit {
 
     userInfo.checkIsAddSign(data)
     userInfo.checkIsFirstTime(data)
-    // processFormatData(data);
+    processFormatData(data)
     return data
   }
 

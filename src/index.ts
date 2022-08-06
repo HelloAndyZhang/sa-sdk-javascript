@@ -15,20 +15,25 @@ import {
   getHostname
 } from './utils'
 import PageInfo from './core/PageInfo'
-import EventEmitterSa from './helper/EventEmitterSa'
 import SendState from './core/SendState'
-import addSinglePageEvent from './helper/addSinglePageEvent'
-import EventEmitter from './helper/EventEmitter'
+import EventCenter from './core/EventCenter'
 import Store from './core/Store'
 import Logger from './helper/Logger'
 import { addHashEvent } from './helper/addEvent'
-import eventCheck from './helper/EventCheck'
 import Kit from './core/kit'
 import BatchSend from './core/BatchSend'
 import userInfo from './core/UserInfo'
-import { para_default, sdkversion_placeholder, source_channel_standard, sdPara } from './Constant'
+import {
+  para_default,
+  sdkversion_placeholder,
+  source_channel_standard,
+  sdPara,
+  IDENTITY_KEY
+} from './Constant'
 import * as modules from './plugins'
-export class UUFox {
+import { CoreFeature, DataFormatFeature, registerFeature } from './core/stage'
+
+export class UUFox extends EventCenter {
   private _t: number
   public lib_version: string
   public is_first_visitor: boolean
@@ -36,10 +41,7 @@ export class UUFox {
   public is_heatmap_render_mode: boolean
   public para!: ParaDefault
   readonly logger: Logger
-  public events: EventEmitterSa
   public pageInfo: PageInfo
-  public spa: EventEmitter
-  public sdk: EventEmitter
   public kit: Kit
   public readyState: ReadyState
   public sendState: SendState
@@ -47,13 +49,11 @@ export class UUFox {
   public batchSend: BatchSend
   public modules: any
   constructor() {
-    this.spa = new EventEmitter()
-    this.sdk = new EventEmitter()
+    super()
     this.logger = new Logger({ id: '[uFox]', enabled: true })
     this.readyState = new ReadyState()
     this.sendState = new SendState()
     this.pageInfo = new PageInfo()
-    this.events = new EventEmitterSa()
     this.store = new Store()
     this.kit = new Kit()
     this.batchSend = new BatchSend()
@@ -66,6 +66,8 @@ export class UUFox {
   }
 
   init(para: SDKConfig) {
+    registerFeature(new CoreFeature())
+    registerFeature(new DataFormatFeature())
     this.sdk.emit('beforeInit')
     if (this.readyState && this.readyState.state && this.readyState.state >= 2) {
       return
@@ -79,7 +81,7 @@ export class UUFox {
     this.sdk.emit('afterInit')
   }
 
-  setInitVar() {
+  private setInitVar() {
     this._t = this._t || new Date().getTime()
     this.lib_version = sdkversion_placeholder
     this.is_first_visitor = false
@@ -228,7 +230,7 @@ export class UUFox {
 
   track(event: string, properties?: Partial<Properties>, callback?: CallBack) {
     if (
-      eventCheck({
+      this.check({
         event: event,
         properties: properties
       })
@@ -246,6 +248,7 @@ export class UUFox {
     if (event === 'autoTrack') {
       this.autoTrack(para)
     }
+    console.log(event)
   }
 
   autoTrack(para: Partial<Properties>, callback?: CallBack) {
@@ -303,11 +306,11 @@ export class UUFox {
     )
   }
 
-  detectMode() {
+  private detectMode() {
     this.trackMode()
   }
 
-  trackMode() {
+  private trackMode() {
     this.readyState.setState(3)
     this.pageInfo.initPage()
 
@@ -324,15 +327,9 @@ export class UUFox {
     // enterFullTrack()
   }
 
-  initSystemEvent() {
-    addSinglePageEvent((url: string) => {
-      this.spa.emit('switch', url)
-    })
-  }
-
   register(props: any) {
     if (
-      eventCheck({
+      this.check({
         properties: props
       })
     ) {
@@ -341,15 +338,97 @@ export class UUFox {
       this.logger.log('register输入的参数有误')
     }
   }
+  login(id: string | number, callback?: any) {
+    if (typeof id === 'number') {
+      id = String(id)
+    }
+    var returnValue = this.loginBody({
+      id: id,
+      callback: callback,
+      name: IDENTITY_KEY.LOGIN
+    })
+    !returnValue && isFunction(callback) && callback()
+  }
+  loginBody(obj: any) {
+    var id = obj.id
+    var callback = obj.callback
+    var name = obj.name
 
+    var firstId = this.store.getFirstId()
+    var distinctId = this.store.getOriginDistinctId()
+
+    if (
+      !this.check({
+        distinct_id: id
+      })
+    ) {
+      this.logger.log('login id is invalid')
+      return false
+    }
+    if (id === this.store.getOriginDistinctId() && !firstId) {
+      this.logger.log('login id is equal to distinct_id')
+      return false
+    }
+    if (
+      isObject(this.store._state.identities) &&
+      this.store._state.identities.hasOwnProperty(name) &&
+      id === this.store._state.first_id
+    ) {
+      return false
+    }
+
+    var isNewLoginId =
+      this.store._state.history_login_id.name !== name ||
+      id !== this.store._state.history_login_id.value
+    if (isNewLoginId) {
+      this.store._state.identities[name] = id
+      this.store.set('history_login_id', {
+        name: name,
+        value: id
+      })
+
+      if (!firstId) {
+        this.store.set('first_id', distinctId)
+      }
+
+      this.sendSignup(id, '$SignUp', {}, callback)
+
+      var tempObj = {
+        $identity_cookie_id: this.store._state.identities.$identity_cookie_id
+      }
+      tempObj[name] = id
+      this.resetIdentities(tempObj)
+      return true
+    }
+    return false
+  }
+  private sendSignup(id: any, e: any, p: any, c: any) {
+    var original_id = this.store.getFirstId() || this.store.getDistinctId()
+    this.store.set('distinct_id', id)
+    var data = this.kit.buildData({
+      original_id: original_id,
+      distinct_id: this.store.getDistinctId(),
+      type: 'track_signup',
+      event: e,
+      properties: p
+    })
+    this.kit.sendData(data, c)
+  }
+  private resetIdentities(resetObj: any) {
+    var identities = {}
+    for (var i in resetObj) {
+      identities[i] = resetObj[i]
+    }
+    this.store._state.identities = identities
+    this.store.save()
+  }
   registerPage(obj: any) {
     if (
-      eventCheck({
+      this.check({
         properties: obj
       })
     ) {
-      // this.pageInfo.register(obj)
-      extend(this.pageInfo.currentProps, obj)
+      this.pageInfo.register(obj)
     } else {
       this.logger.log('register输入的参数有误')
     }
@@ -357,7 +436,7 @@ export class UUFox {
 
   listenSinglePage() {
     if (this.para.is_track_single_page) {
-      this.spa.on('switch', (last_url: string) => {
+      super.listenSinglePage(last_url => {
         const sendData = (extraData?: any) => {
           extraData = extraData || {}
           if (last_url !== location.href) {

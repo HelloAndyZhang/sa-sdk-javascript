@@ -8,6 +8,7 @@ interface Window {
   getMatchedCSSRules: any
   msCrypto: any
   uuFoxDataAnalytic: any
+  plus: any
 }
 declare interface SDKConfig {
   sdk_url: string // sensorsdata.min.js 文件的地址。	请从 GitHub 获取并且放在你们自己网站目录下。

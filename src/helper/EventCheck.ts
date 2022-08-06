@@ -4,39 +4,39 @@ import ufox from '..'
 import Logger from './Logger'
 
 const logger = new Logger({ id: 'EventCheck', enabled: true })
-const checkLog = {
+export const checkLog = {
   string: function (str: string) {
-    logger.log(str + ' must be string')
+    logger.warn(str + ' must be string')
   },
   emptyString: function (str: string) {
-    logger.log(str + "'s is empty")
+    logger.warn(str + "'s is empty")
   },
   regexTest: function (str: string) {
-    logger.log(str + ' is invalid')
+    logger.warn(str + ' is invalid')
   },
   idLength: function (str: string) {
-    logger.log(str + ' length is longer than ' + sdPara.max_id_length)
+    logger.warn(str + ' length is longer than ' + sdPara.max_id_length)
   },
   keyLength: function (str: string) {
-    logger.log(str + ' length is longer than ' + sdPara.max_key_length)
+    logger.warn(str + ' length is longer than ' + sdPara.max_key_length)
   },
   stringLength: function (str: string) {
-    logger.log(str + ' length is longer than ' + sdPara.max_string_length)
+    logger.warn(str + ' length is longer than ' + sdPara.max_string_length)
   },
   voidZero: function (str: string) {
-    logger.log(str + "'s is undefined")
+    logger.warn(str + "'s is undefined")
   },
   reservedLoginId: function (str: string) {
-    logger.log(str + ' is invalid')
+    logger.warn(str + ' is invalid')
   },
   reservedBind: function (str: string) {
-    logger.log(str + ' is invalid')
+    logger.warn(str + ' is invalid')
   },
   reservedUnbind: function (str: string) {
-    logger.log(str + ' is invalid')
+    logger.warn(str + ' is invalid')
   }
 }
-const ruleOption = {
+export const ruleOption = {
   regName:
     /^((?!^distinct_id$|^original_id$|^time$|^properties$|^id$|^first_id$|^second_id$|^users$|^events$|^event$|^user_id$|^date$|^datetime$|^user_tag.*|^user_group.*)[a-zA-Z_$][a-zA-Z\d_$]*)$/i,
   loginIDReservedNames: ['$identity_anonymous_id', '$identity_cookie_id'],
@@ -107,7 +107,7 @@ const ruleOption = {
     return true
   }
 }
-const checkOption = {
+export const checkOption = {
   distinct_id: {
     rules: ['string', 'emptyString', 'idLength'],
     onComplete: function (status: string, val: string, rule_type: string) {
@@ -160,7 +160,7 @@ const checkOption = {
   },
   properties: function (p: any) {
     if (isObject(p)) {
-      each(p, function (s: any, k: any) {
+      each(p, (s: any, k: any) => {
         check({
           propertyKey: k
         })
@@ -276,18 +276,18 @@ const checkOption = {
       return status
     }
   },
-
-  check: function (a: string, b: any, onComplete: any) {
-    const checkRules = this[a]
+  check: function (a: string, b: any, onComplete?: any) {
+    var checkRules = this[a]
     if (isFunction(checkRules)) {
       return checkRules.call(this, b)
     } else if (!checkRules) {
       return false
     }
-    for (let i = 0; i < checkRules.rules.length; i++) {
-      const rule = checkRules.rules[i]
-      const status = ruleOption[rule](b)
-      const result = isFunction(onComplete)
+    for (var i = 0; i < checkRules.rules.length; i++) {
+      var rule = checkRules.rules[i]
+      var status = ruleOption[rule](b)
+      //@ts-ignore
+      var result = isFunction(onComplete)
         ? onComplete(status, b, rule)
         : checkRules.onComplete(status, b, rule)
       if (!status) {
@@ -298,8 +298,9 @@ const checkOption = {
   }
 }
 
-export default function check(p: any, onComplete?: CallBack) {
-  for (const i in p) {
+//校验事件参数
+export default function check(p: any, onComplete?: any) {
+  for (var i in p) {
     if (Object.prototype.hasOwnProperty.call(p, i) && !checkOption.check(i, p[i], onComplete)) {
       return false
     }
