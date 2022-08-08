@@ -12,14 +12,14 @@ import {
 } from '../../utils'
 import { sdPara } from '../../Constant'
 import check from '../../helper/EventCheck'
-let processDef = {
+const processDef = {
   addCustomProps: null,
   formatData: null
 }
 
-export let dataStage = new Stage(processDef)
+export const dataStage = new Stage(processDef)
 
-export let dataStageImpl = {
+export const dataStageImpl = {
   stage: null,
   init: function (stage: any) {
     this.stage = stage
@@ -31,7 +31,7 @@ function strip_sa_properties(p: any) {
   }
   each(p, function (v: any, k: any) {
     if (isArray(v)) {
-      var temp: any = []
+      const temp: any = []
       each(v, function (arrv: any) {
         if (isString(arrv)) {
           temp.push(arrv)
@@ -69,7 +69,7 @@ function formatString(str: any, maxLen: any) {
 }
 
 function filterReservedProperties(obj: any) {
-  var reservedFields = [
+  const reservedFields = [
     'distinct_id',
     'user_id',
     'id',
@@ -102,8 +102,8 @@ function filterReservedProperties(obj: any) {
 }
 
 function searchObjString(o: any) {
-  var white_list = ['$element_selector', '$element_path']
-  var infinite_list = ['sensorsdata_app_visual_properties']
+  const white_list = ['$element_selector', '$element_path']
+  const infinite_list = ['sensorsdata_app_visual_properties']
   if (isObject(o)) {
     each(o, function (a: any, b: any) {
       if (isObject(a)) {
@@ -133,11 +133,11 @@ function searchZZAppStyle(data: any) {
 
 function formatItem(data: any) {
   if ('item_type' in data) {
-    var item_type = data['item_type']
+    const item_type = data.item_type
 
-    var typeOnComplete = function (status: any) {
+    const typeOnComplete = function (status: any) {
       if (!status) {
-        delete data['item_type']
+        delete data.item_type
       }
       return true
     }
@@ -150,10 +150,10 @@ function formatItem(data: any) {
     )
   }
   if ('item_id' in data) {
-    var item_id = data['item_id']
-    var idOnComplete = function (status: string, val: string, rule: string) {
+    const item_id = data.item_id
+    const idOnComplete = function (status: string, _val: string, rule: string) {
       if (!status && rule === 'string') {
-        delete data['item_id']
+        delete data.item_id
       }
       return true
     }
@@ -167,8 +167,8 @@ function formatItem(data: any) {
 }
 
 function formatProperties(p: any) {
-  each(p, function (val: any, key: any) {
-    var onComplete = function (status: string, value: any, rule_type: any) {
+  each(p, function (_val: any, key: any) {
+    const onComplete = function (status: string, _value: any, rule_type: any) {
       if (!status && rule_type !== 'keyLength') {
         delete p[key]
       }
@@ -184,7 +184,7 @@ function formatProperties(p: any) {
 }
 
 function formatData(data: any) {
-  var p = data.properties
+  const p = data.properties
 
   if (isObject(p)) {
     strip_sa_properties(p)
@@ -205,7 +205,7 @@ function formatData(data: any) {
   formatItem(data)
 }
 
-export let dataStageImpl$1 = {
+export const dataStageImpl$1 = {
   init: function () {},
   interceptor: {
     formatData: {
@@ -219,10 +219,10 @@ export let dataStageImpl$1 = {
 }
 
 export function processAddCustomProps(data: any) {
-  //@ts-ignore
+  // @ts-ignore
   return dataStageImpl.stage.process('addCustomProps', data)
 }
 export function processFormatData(data: any) {
-  //@ts-ignore
+  // @ts-ignore
   return dataStageImpl.stage.process('formatData', data)
 }

@@ -7,6 +7,7 @@ export class CoreFeature {
     init: (stage: any) => void
     interceptor: { send: { entry: (data: any, context: any) => any } }
   }
+
   constructor() {
     this.dataStage = dataStageImpl
     this.sendStage = sendStageImpl
@@ -18,6 +19,7 @@ export class DataFormatFeature {
     init: () => void
     interceptor: { formatData: { priority: number; entry: (data: any) => any } }
   }
+
   constructor() {
     this.dataStage = dataStageImpl$1
   }

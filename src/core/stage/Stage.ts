@@ -10,6 +10,7 @@ export default class Stage {
     this.processDef = processDef
     this.registeredInterceptors = {}
   }
+
   process(proc: any, data: any) {
     if (!proc || !(proc in this.processDef)) {
       console.warn('process [' + proc + '] is not supported')
@@ -42,6 +43,7 @@ export default class Stage {
     }
     return data
   }
+
   registerStageImplementation(stageImpl: any) {
     if (!stageImpl || !stageImpl.init || !isFunction(stageImpl.init)) {
       return
@@ -49,6 +51,7 @@ export default class Stage {
     stageImpl.init(this)
     stageImpl.interceptor && this.registerInterceptor(stageImpl.interceptor)
   }
+
   registerInterceptor(interceptor: any) {
     if (!interceptor) {
       return
@@ -83,9 +86,11 @@ class CancellationToken {
   constructor(canceled = false) {
     this.canceled = canceled
   }
+
   cancel() {
     this.canceled = true
   }
+
   getCanceled() {
     return this.canceled || false
   }
@@ -101,8 +106,9 @@ class InterceptorContext {
     this.data = data
     this.pos = pos
   }
+
   getOriginalData() {
-    var originalData = null
+    let originalData = null
     try {
       originalData = JSON.parse(JSON.stringify(this.data || null))
     } catch (e) {
@@ -110,6 +116,7 @@ class InterceptorContext {
     }
     return originalData
   }
+
   getPosition() {
     return this.pos
   }

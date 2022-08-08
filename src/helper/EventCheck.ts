@@ -277,17 +277,17 @@ export const checkOption = {
     }
   },
   check: function (a: string, b: any, onComplete?: any) {
-    var checkRules = this[a]
+    const checkRules = this[a]
     if (isFunction(checkRules)) {
       return checkRules.call(this, b)
     } else if (!checkRules) {
       return false
     }
-    for (var i = 0; i < checkRules.rules.length; i++) {
-      var rule = checkRules.rules[i]
-      var status = ruleOption[rule](b)
-      //@ts-ignore
-      var result = isFunction(onComplete)
+    for (let i = 0; i < checkRules.rules.length; i++) {
+      const rule = checkRules.rules[i]
+      const status = ruleOption[rule](b)
+      // @ts-ignore
+      const result = isFunction(onComplete)
         ? onComplete(status, b, rule)
         : checkRules.onComplete(status, b, rule)
       if (!status) {
@@ -298,9 +298,9 @@ export const checkOption = {
   }
 }
 
-//校验事件参数
+// 校验事件参数
 export default function check(p: any, onComplete?: any) {
-  for (var i in p) {
+  for (const i in p) {
     if (Object.prototype.hasOwnProperty.call(p, i) && !checkOption.check(i, p[i], onComplete)) {
       return false
     }

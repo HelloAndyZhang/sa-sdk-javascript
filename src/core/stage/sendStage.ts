@@ -1,21 +1,21 @@
 import Stage from './Stage'
 import ufox from '../..'
-export let processDef = {
+export const processDef = {
   beforeSend: 'send',
   send: 'afterSend',
   afterSend: null
 }
 
-export let sendStage = new Stage(processDef)
-export let sendStageImpl = {
+export const sendStage = new Stage(processDef)
+export const sendStageImpl = {
   stage: null,
   init: function (stage: any) {
     this.stage = stage
   },
   interceptor: {
     send: {
-      entry: function (data: any, context: any) {
-        var callback = data.callback
+      entry: function (data: any, _context: any) {
+        // const callback = data.callback
 
         if (!ufox.para.app_js_bridge) {
           // ufox.debug.apph5({

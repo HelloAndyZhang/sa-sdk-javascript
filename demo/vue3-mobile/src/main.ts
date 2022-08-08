@@ -42,6 +42,7 @@ ufox.registerPage({
   uu_current_url: '我是公共属性uu_current_url',
   uu_referrer: '我是公共属性uu_referrer'
   // user_id:1,
+  // 1:0,
 })
 ufox.use('PageLeave')
 ufox.use('PageLoad')
