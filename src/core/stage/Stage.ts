@@ -1,4 +1,4 @@
-import { isArray, _localStorage, isObject, isFunction, isNumber } from '../utils'
+import { isArray, _localStorage, isObject, isFunction, isNumber } from '../../utils'
 
 export default class Stage {
   processDef: any

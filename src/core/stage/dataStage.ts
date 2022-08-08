@@ -1,4 +1,4 @@
-import Stage from '../../helper/Stage'
+import Stage from './Stage'
 import {
   isObject,
   isArray,

@@ -11,7 +11,9 @@ import {
   isNumber,
   isEmptyObject,
   hashCode,
-  searchConfigData
+  searchConfigData,
+  each,
+  isFunction
 } from '../utils'
 import userInfo from './UserInfo'
 import { processFormatData, processAddCustomProps } from './stage/dataStage'
@@ -59,6 +61,26 @@ function addPropsHook(data: any) {
     typeof data.properties.$title === 'undefined'
   ) {
     data.properties.$title = document.title
+  }
+}
+function parseSuperProperties(data: any) {
+  var obj = data.properties
+  var copyData = JSON.parse(JSON.stringify(data))
+  if (isObject(obj)) {
+    each(obj, function (objVal: any, key: any) {
+      if (isFunction(objVal)) {
+        try {
+          obj[key] = objVal(copyData)
+          if (isFunction(obj[key])) {
+            console.warn('您的属性- ' + key + ' 格式不满足要求，我们已经将其删除')
+            delete obj[key]
+          }
+        } catch (e) {
+          delete obj[key]
+          console.warn('您的属性- ' + key + ' 抛出了异常，我们已经将其删除')
+        }
+      }
+    })
   }
 }
 export default class Kit {
@@ -166,7 +188,7 @@ export default class Kit {
     }
 
     // sd.vtrackBase.addCustomProps(data);
-    // parseSuperProperties(data)
+    parseSuperProperties(data)
 
     addReferrerHost(data)
     addPropsHook(data)

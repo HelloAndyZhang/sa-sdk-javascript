@@ -1,4 +1,4 @@
-import Stage from '../../helper/Stage'
+import Stage from './Stage'
 import ufox from '../..'
 export let processDef = {
   beforeSend: 'send',
